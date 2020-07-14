@@ -41,8 +41,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val home = LatLng(37.405267, -121.852731)
         map.addMarker(MarkerOptions().position(home).title("Home"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(home))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(home,zoomLevel))
         setMapLongClick(map)
+        setPOIClick(map)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -72,4 +73,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
+    private fun setPOIClick(map: GoogleMap){
+        map.setOnPoiClickListener{poi ->
+            val poiMarker = map.addMarker(MarkerOptions()
+                .position(poi.latLng)
+                .title(poi.name) )
+            poiMarker.showInfoWindow()
+        }
+    }
+
 }

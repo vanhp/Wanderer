@@ -6,4 +6,5 @@
     <string name="satellite_map">satelliteMap</string>
     <string name="terrain_map">terrainMap</string>
     <string name="dropped_pin">What\'s Here</string>
+    <string name="poi">Poi</string>
 </resources>
