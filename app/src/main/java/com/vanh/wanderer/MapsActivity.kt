@@ -1,7 +1,9 @@
 package com.vanh.wanderer
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -10,12 +12,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
+    private val TAG = MapsActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +41,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val zoomLevel = 15f
+        val zoomLevel = 10f
         // Add a marker in Sydney and move the camera
         val home = LatLng(37.405267, -121.852731)
         map.addMarker(MarkerOptions().position(home).title("Home"))
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(home,zoomLevel))
         setMapLongClick(map)
         setPOIClick(map)
+        setMapStyle(map)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -80,6 +85,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .title(poi.name) )
             poiMarker.showInfoWindow()
         }
+    }
+    fun setMapStyle(map: GoogleMap){
+        try{
+            val success = map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style))
+            if (! success) Log.i(TAG,"parse style failed")
+        }catch (e: Resources.NotFoundException) { Log.e(TAG,"can't find the style",e)}
     }
 
 }
